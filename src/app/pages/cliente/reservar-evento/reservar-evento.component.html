@@ -1,0 +1,57 @@
+@if (evento) {
+  <div class="titulo-pagina">
+    <a routerLink="/cliente/eventos">← Volver a los eventos</a>
+    <h1>Reservar: {{ evento.nombre }}</h1>
+    <p class="text-secondary">{{ evento.teatro }} · {{ evento.ciudad }}, {{ evento.departamento }}</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title">Detalle del evento</h5>
+            <app-estado-badge [estado]="evento.estado" />
+          </div>
+          <p>{{ evento.descripcion }}</p>
+          <ul class="list-unstyled mb-0">
+            <li><strong>Inicio:</strong> {{ evento.fechaInicio | date: 'dd/MM/yyyy h:mm a' }}</li>
+            <li><strong>Finaliza:</strong> {{ evento.fechaFin | date: 'dd/MM/yyyy h:mm a' }}</li>
+            <li><strong>Capacidad:</strong> {{ evento.capacidad }} personas</li>
+            <li><strong>Precio por entrada:</strong> {{ evento.precioBase | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</li>
+            <li><strong>Observaciones:</strong> {{ evento.observaciones }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Tu reserva</h5>
+          <form (ngSubmit)="reservar()">
+            <div class="mb-3">
+              <label for="entradas" class="form-label">Número de entradas</label>
+              <input id="entradas" name="entradas" type="number" min="1" max="10" class="form-control" [(ngModel)]="entradas" />
+            </div>
+
+            <div class="mb-3">
+              <label for="observaciones" class="form-label">Observaciones</label>
+              <textarea id="observaciones" name="observaciones" rows="3" class="form-control" ngModel></textarea>
+            </div>
+
+            <p class="total">Valor total: {{ total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</p>
+
+            @if (mensaje) {
+              <div class="alert alert-info">{{ mensaje }}</div>
+            }
+
+            <button type="submit" class="btn btn-primary w-100">Reservar entradas</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <p>No se encontró el evento. <a routerLink="/cliente/eventos">Volver a los eventos</a></p>
+}
