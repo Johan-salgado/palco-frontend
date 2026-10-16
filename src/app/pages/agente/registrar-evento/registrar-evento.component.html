@@ -1,0 +1,75 @@
+<div class="titulo-pagina">
+  <h1>Registrar evento</h1>
+  <p class="text-secondary">Completa los datos del espectáculo.</p>
+</div>
+
+<form class="formulario card card-body" (ngSubmit)="guardar()">
+  <h5 class="subtitulo">Información general</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-md-8">
+      <label for="nombre" class="form-label">Nombre del evento</label>
+      <input id="nombre" name="nombre" class="form-control" ngModel />
+    </div>
+    <div class="col-md-4">
+      <label for="estado" class="form-label">Estado</label>
+      <select id="estado" name="estado" class="form-select" ngModel="Programado">
+        @for (e of estados; track e) {
+          <option [value]="e">{{ e }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-12">
+      <label for="descripcion" class="form-label">Descripción</label>
+      <textarea id="descripcion" name="descripcion" rows="3" class="form-control" ngModel></textarea>
+    </div>
+  </div>
+
+  <h5 class="subtitulo">Lugar y horario</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <label for="teatro" class="form-label">Teatro</label>
+      <input id="teatro" name="teatro" class="form-control" ngModel />
+    </div>
+    <div class="col-md-6">
+      <label for="ciudad" class="form-label">Ciudad</label>
+      <select id="ciudad" name="ciudad" class="form-select" ngModel>
+        @for (c of ciudades; track c) {
+          <option [value]="c">{{ c }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="inicio" class="form-label">Fecha y hora de inicio</label>
+      <input id="inicio" name="inicio" type="datetime-local" class="form-control" ngModel />
+    </div>
+    <div class="col-md-6">
+      <label for="fin" class="form-label">Fecha y hora de finalización</label>
+      <input id="fin" name="fin" type="datetime-local" class="form-control" ngModel />
+    </div>
+  </div>
+
+  <h5 class="subtitulo">Entradas</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <label for="capacidad" class="form-label">Capacidad total</label>
+      <input id="capacidad" name="capacidad" type="number" min="1" class="form-control" ngModel />
+    </div>
+    <div class="col-md-6">
+      <label for="precio" class="form-label">Precio base (COP)</label>
+      <input id="precio" name="precio" type="number" min="0" class="form-control" ngModel />
+    </div>
+    <div class="col-12">
+      <label for="observaciones" class="form-label">Observaciones</label>
+      <textarea id="observaciones" name="observaciones" rows="2" class="form-control" ngModel></textarea>
+    </div>
+  </div>
+
+  @if (mensaje) {
+    <div class="alert alert-info">{{ mensaje }}</div>
+  }
+
+  <div class="d-flex justify-content-end gap-2">
+    <a routerLink="/agente/eventos" class="btn btn-outline-primary">Cancelar</a>
+    <button type="submit" class="btn btn-primary">Registrar evento</button>
+  </div>
+</form>
