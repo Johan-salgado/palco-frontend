@@ -1,0 +1,39 @@
+<div class="row g-0 min-vh-100">
+  <div class="col-md-5 lateral d-flex flex-column justify-content-between">
+    <div>
+      <h1 class="text-white display-4">Palco</h1>
+      <p class="fs-5">Encuentra tu próximo espectáculo y reserva tus entradas.</p>
+    </div>
+    <small>Proyecto Integrador · Bases de Datos y Web I</small>
+  </div>
+
+  <div class="col-md-7 d-flex align-items-center justify-content-center p-4">
+    <form class="formulario" (ngSubmit)="ingresar()">
+      <h2 class="mb-4">Iniciar sesión</h2>
+
+      <div class="mb-3">
+        <label for="correo" class="form-label">Correo electrónico</label>
+        <input id="correo" name="correo" type="email" class="form-control" [(ngModel)]="correo" />
+      </div>
+
+      <div class="mb-3">
+        <label for="clave" class="form-label">Contraseña</label>
+        <input id="clave" name="clave" type="password" class="form-control" [(ngModel)]="clave" />
+      </div>
+
+      <div class="mb-4">
+        <label for="perfil" class="form-label">Entrar como</label>
+        <select id="perfil" name="perfil" class="form-select" [(ngModel)]="perfil">
+          <option value="cliente">Cliente</option>
+          <option value="agente">Agente</option>
+          <option value="administrador">Administrador</option>
+        </select>
+        <div class="form-text">Por ahora el perfil se elige aquí porque todavía no hay backend.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+
+      <p class="text-center mt-3">¿No tienes cuenta? <a routerLink="/auth/registro">Regístrate</a></p>
+    </form>
+  </div>
+</div>
