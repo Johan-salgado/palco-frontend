@@ -70,3 +70,18 @@ En esta etapa, el cliente de ejemplo es Laura Gómez (id 1) y la agente de ejemp
 Incluido: páginas, componentes, rutas, navegación, HTML estructurado, estilos con SCSS, Bootstrap, diseño responsive y renderizado con mocks.
 
 Pendiente para las siguientes etapas: backend y base de datos, consumo de APIs reales, autenticación, registro real de usuarios, creación de reservas y actualización real de estados, y persistencia de datos.
+
+## Integrantes
+
+- Jose Daniel Rivas Tenorio (230232009)
+- Johan Eliu Salgado Castro (230232033)
+
+Docente: Jesús David Mejía Vergara · Unidad Central del Valle del Cauca (UCEVA)
+
+## Estándar de commits
+
+Los mensajes siguen el formato `tipo: descripción en minúscula`:
+
+- `feat:` nueva funcionalidad o página (ej. `feat: crear página principal`)
+- `fix:` corrección de errores (ej. `fix: corregir enlaces del menú`)
+- `docs:` cambios en documentación (ej. `docs: actualizar README`)
