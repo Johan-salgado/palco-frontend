@@ -1,0 +1,70 @@
+<div class="row g-0 min-vh-100">
+  <div class="col-md-5 lateral d-flex flex-column justify-content-between">
+    <div>
+      <h1 class="text-white display-4">Palco</h1>
+      <p class="fs-5">Crea tu cuenta como cliente para reservar o como agente para publicar eventos.</p>
+    </div>
+    <small>Proyecto Integrador · Bases de Datos y Web I</small>
+  </div>
+
+  <div class="col-md-7 d-flex align-items-center justify-content-center p-4">
+    <form class="formulario" (ngSubmit)="registrar()">
+      <h2 class="mb-4">Crear cuenta</h2>
+
+      <div class="mb-3">
+        <label for="tipo" class="form-label">Tipo de cuenta</label>
+        <select id="tipo" name="tipo" class="form-select" [(ngModel)]="tipoCuenta">
+          <option value="cliente">Cliente</option>
+          <option value="agente">Agente</option>
+        </select>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-12">
+          <label for="nombre" class="form-label">Nombre completo</label>
+          <input id="nombre" name="nombre" class="form-control" ngModel />
+        </div>
+        <div class="col-sm-6">
+          <label for="identificacion" class="form-label">Cédula o pasaporte</label>
+          <input id="identificacion" name="identificacion" class="form-control" ngModel />
+        </div>
+        <div class="col-sm-6">
+          <label for="telefono" class="form-label">Teléfono</label>
+          <input id="telefono" name="telefono" type="tel" class="form-control" ngModel />
+        </div>
+        <div class="col-12">
+          <label for="correo" class="form-label">Correo electrónico</label>
+          <input id="correo" name="correo" type="email" class="form-control" ngModel />
+        </div>
+        <div class="col-sm-6">
+          <label for="direccion" class="form-label">Dirección</label>
+          <input id="direccion" name="direccion" class="form-control" ngModel />
+        </div>
+        <div class="col-sm-6">
+          <label for="ciudad" class="form-label">Ciudad</label>
+          <input id="ciudad" name="ciudad" class="form-control" ngModel />
+        </div>
+
+        @if (tipoCuenta === 'agente') {
+          <div class="col-12">
+            <label for="experiencia" class="form-label">Experiencia</label>
+            <textarea id="experiencia" name="experiencia" rows="2" class="form-control" ngModel></textarea>
+          </div>
+        }
+
+        <div class="col-12">
+          <label for="clave" class="form-label">Contraseña</label>
+          <input id="clave" name="clave" type="password" class="form-control" ngModel />
+        </div>
+      </div>
+
+      @if (mensaje) {
+        <div class="alert alert-info mt-3">{{ mensaje }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100 mt-4">Crear cuenta</button>
+
+      <p class="text-center mt-3">¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a></p>
+    </form>
+  </div>
+</div>
