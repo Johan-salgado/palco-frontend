@@ -1,0 +1,35 @@
+<div class="titulo-pagina">
+  <h1>Mis reservas</h1>
+  <p class="text-secondary">Aquí puedes ver el estado de cada una de tus reservas.</p>
+</div>
+
+@if (reservas.length === 0) {
+  <p>Todavía no tienes reservas. <a routerLink="/cliente/eventos">Ver eventos</a></p>
+} @else {
+  <div class="tarjeta-tabla table-responsive">
+    <table class="table table-striped align-middle mb-0">
+      <thead>
+        <tr>
+          <th>N.º</th>
+          <th>Evento</th>
+          <th>Fecha de reserva</th>
+          <th>Entradas</th>
+          <th>Valor total</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of reservas; track r.id) {
+          <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.nombreEvento }} <small class="text-secondary">({{ r.ciudad }})</small></td>
+            <td>{{ r.fechaReserva | date: 'dd/MM/yyyy h:mm a' }}</td>
+            <td>{{ r.numEntradas }}</td>
+            <td>{{ r.valorTotal | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
+            <td><app-estado-badge [estado]="r.estado" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
