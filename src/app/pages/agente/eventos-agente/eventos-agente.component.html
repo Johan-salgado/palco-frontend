@@ -1,0 +1,45 @@
+<div class="titulo-pagina d-flex justify-content-between align-items-end flex-wrap gap-2">
+  <div>
+    <h1>Mis eventos</h1>
+    <p class="text-secondary mb-0">Eventos que has registrado en la plataforma.</p>
+  </div>
+  <a routerLink="/agente/registrar-evento" class="btn btn-primary">Registrar evento</a>
+</div>
+
+@if (eventos.length === 0) {
+  <p>Todavía no has registrado eventos.</p>
+} @else {
+  <div class="tarjeta-tabla table-responsive">
+    <table class="table table-striped align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Evento</th>
+          <th>Lugar</th>
+          <th>Inicio</th>
+          <th>Capacidad</th>
+          <th>Precio base</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (e of eventos; track e.codigo) {
+          <tr>
+            <td>{{ e.codigo }}</td>
+            <td>{{ e.nombre }}</td>
+            <td>{{ e.teatro }} ({{ e.ciudad }})</td>
+            <td>{{ e.fechaInicio | date: 'dd/MM/yyyy h:mm a' }}</td>
+            <td>{{ e.capacidad }}</td>
+            <td>{{ e.precioBase | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
+            <td>
+              <app-estado-badge [estado]="e.estado" />
+              @if (e.causaCancelacion) {
+                <small class="d-block text-secondary">{{ e.causaCancelacion }}</small>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
