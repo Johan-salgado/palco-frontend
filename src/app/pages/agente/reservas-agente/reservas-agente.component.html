@@ -1,0 +1,45 @@
+<div class="titulo-pagina">
+  <h1>Administrar reservas</h1>
+  <p class="text-secondary">Reservas solicitadas a tus eventos. Puedes cambiar el estado desde la última columna.</p>
+</div>
+
+@if (reservas.length === 0) {
+  <p>Tus eventos todavía no tienen reservas.</p>
+} @else {
+  <div class="tarjeta-tabla table-responsive">
+    <table class="table table-striped align-middle mb-0">
+      <thead>
+        <tr>
+          <th>N.º</th>
+          <th>Evento</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Entradas</th>
+          <th>Valor total</th>
+          <th>Estado</th>
+          <th>Cambiar estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of reservas; track r.id) {
+          <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.nombreEvento }}</td>
+            <td>{{ r.nombreCliente }}</td>
+            <td>{{ r.fechaReserva | date: 'dd/MM/yyyy h:mm a' }}</td>
+            <td>{{ r.numEntradas }}</td>
+            <td>{{ r.valorTotal | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
+            <td><app-estado-badge [estado]="r.estado" /></td>
+            <td>
+              <select class="form-select form-select-sm selector" [(ngModel)]="r.estado">
+                @for (e of estados; track e) {
+                  <option [value]="e">{{ e }}</option>
+                }
+              </select>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
