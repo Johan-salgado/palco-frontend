@@ -1,0 +1,32 @@
+<div class="titulo-pagina">
+  <h1>Eventos disponibles</h1>
+  <p class="text-secondary">Elige un evento y reserva tus entradas.</p>
+</div>
+
+<input type="text" class="form-control buscador mb-4" placeholder="Buscar por nombre o ciudad" [(ngModel)]="busqueda" />
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  @for (e of filtrar(); track e.codigo) {
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-header fecha">
+          {{ e.fechaInicio | date: 'dd MMMM y, h:mm a' }}
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title">{{ e.nombre }}</h5>
+            <app-estado-badge [estado]="e.estado" />
+          </div>
+          <p class="card-text">{{ e.descripcion }}</p>
+          <p class="card-text text-secondary">{{ e.teatro }} · {{ e.ciudad }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+          <strong>{{ e.precioBase | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</strong>
+          <a class="btn btn-primary btn-sm" [routerLink]="['/cliente/reservar', e.codigo]">Reservar</a>
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <p>No se encontraron eventos.</p>
+  }
+</div>
