@@ -1,0 +1,39 @@
+th {
+  background-color: #efeaf1;
+}
+
+.tarjeta-dato {
+  border-left: 4px solid #c9a24b;
+}
+
+.numero {
+  color: #6b1e3a;
+  margin: 0;
+}
+
+.grafica {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  height: 220px;
+  border-bottom: 2px solid #ccc;
+}
+
+.columna {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.barra {
+  width: 100%;
+  background-color: #6b1e3a;
+  min-height: 4px;
+}
+
+.progress-bar {
+  background-color: #c9a24b;
+}

@@ -1,0 +1,113 @@
+<div class="titulo-pagina">
+  <h1>Reportes del sistema</h1>
+  <p class="text-secondary">Resumen de la actividad de la plataforma (datos de ejemplo).</p>
+</div>
+
+<div class="row g-3 mb-4">
+  @for (r of resumen; track r.titulo) {
+    <div class="col-6 col-md">
+      <div class="card tarjeta-dato">
+        <div class="card-body">
+          <h2 class="numero">{{ r.valor }}</h2>
+          <span class="text-secondary">{{ r.titulo }}</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Ingresos por mes (2026)</h5>
+        <p class="text-secondary">Total: {{ totalIngresos | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</p>
+
+        <div class="grafica">
+          @for (i of ingresos; track i.mes) {
+            <div class="columna">
+              <small>{{ i.valor / 1000000 | number: '1.1-1' }}</small>
+              <div class="barra" [style.height.%]="(i.valor / maxIngreso) * 100"></div>
+              <small>{{ i.mes }}</small>
+            </div>
+          }
+        </div>
+        <small class="text-secondary">Valores en millones de pesos.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Reservas por evento</h5>
+        @for (r of reservasPorEvento; track r.evento) {
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <span>{{ r.evento }}</span>
+              <strong>{{ r.reservas }}</strong>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" [style.width.%]="(r.reservas / maxReservas) * 100"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <h5>Eventos por agente y ciudad</h5>
+    <div class="tarjeta-tabla table-responsive">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Agente</th>
+            <th>Ciudad</th>
+            <th>Eventos</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (f of eventosPorAgente; track f.agente + f.ciudad) {
+            <tr>
+              <td>{{ f.agente }}</td>
+              <td>{{ f.ciudad }}</td>
+              <td>{{ f.eventos }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <h5>Cancelaciones y sus causas</h5>
+    <div class="tarjeta-tabla table-responsive">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Nombre</th>
+            <th>Causa</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of eventosCancelados; track e.codigo) {
+            <tr>
+              <td>Evento</td>
+              <td>{{ e.nombre }}</td>
+              <td>{{ e.causaCancelacion }}</td>
+            </tr>
+          }
+          @for (r of reservasCanceladas; track r.id) {
+            <tr>
+              <td>Reserva {{ r.id }}</td>
+              <td>{{ r.eventoCodigo }}</td>
+              <td>{{ r.causaCancelacion }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
