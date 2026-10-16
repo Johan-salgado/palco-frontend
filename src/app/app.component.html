@@ -1,0 +1,8 @@
+@if (esPaginaAuth()) {
+  <router-outlet />
+} @else {
+  <app-navbar />
+  <main class="container contenido">
+    <router-outlet />
+  </main>
+}
