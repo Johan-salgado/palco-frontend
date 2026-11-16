@@ -1,5 +1,5 @@
 <div class="titulo-pagina">
-  <h1>Registrar evento</h1>
+  <h1>{{ codigo ? 'Editar evento' : 'Registrar evento' }}</h1>
   <p class="text-secondary">Completa los datos del espectáculo.</p>
 </div>
 
@@ -8,11 +8,11 @@
   <div class="row g-3 mb-4">
     <div class="col-md-8">
       <label for="nombre" class="form-label">Nombre del evento</label>
-      <input id="nombre" name="nombre" class="form-control" ngModel />
+      <input id="nombre" name="nombre" class="form-control" [(ngModel)]="evento.nombre" required />
     </div>
     <div class="col-md-4">
       <label for="estado" class="form-label">Estado</label>
-      <select id="estado" name="estado" class="form-select" ngModel="Programado">
+      <select id="estado" name="estado" class="form-select" [(ngModel)]="evento.estado">
         @for (e of estados; track e) {
           <option [value]="e">{{ e }}</option>
         }
@@ -20,31 +20,38 @@
     </div>
     <div class="col-12">
       <label for="descripcion" class="form-label">Descripción</label>
-      <textarea id="descripcion" name="descripcion" rows="3" class="form-control" ngModel></textarea>
+      <textarea id="descripcion" name="descripcion" rows="3" class="form-control" [(ngModel)]="evento.descripcion"></textarea>
     </div>
+    @if (evento.estado === 'Cancelado') {
+      <div class="col-12">
+        <label for="causa" class="form-label">Causa de la cancelación</label>
+        <input id="causa" name="causa" class="form-control" [(ngModel)]="evento.causa_cancelacion" required />
+      </div>
+    }
   </div>
 
   <h5 class="subtitulo">Lugar y horario</h5>
   <div class="row g-3 mb-4">
     <div class="col-md-6">
       <label for="teatro" class="form-label">Teatro</label>
-      <input id="teatro" name="teatro" class="form-control" ngModel />
+      <input id="teatro" name="teatro" class="form-control" [(ngModel)]="evento.teatro" required />
     </div>
     <div class="col-md-6">
       <label for="ciudad" class="form-label">Ciudad</label>
-      <select id="ciudad" name="ciudad" class="form-select" ngModel>
-        @for (c of ciudades; track c) {
-          <option [value]="c">{{ c }}</option>
+      <select id="ciudad" name="ciudad" class="form-select" [(ngModel)]="evento.id_ciudad" required>
+        <option [ngValue]="null" disabled>Selecciona una ciudad</option>
+        @for (c of ciudades; track c.id) {
+          <option [ngValue]="c.id">{{ c.nombre }} ({{ c.departamento }}, {{ c.pais }})</option>
         }
       </select>
     </div>
     <div class="col-md-6">
       <label for="inicio" class="form-label">Fecha y hora de inicio</label>
-      <input id="inicio" name="inicio" type="datetime-local" class="form-control" ngModel />
+      <input id="inicio" name="inicio" type="datetime-local" class="form-control" [(ngModel)]="evento.fecha_inicio" required />
     </div>
     <div class="col-md-6">
       <label for="fin" class="form-label">Fecha y hora de finalización</label>
-      <input id="fin" name="fin" type="datetime-local" class="form-control" ngModel />
+      <input id="fin" name="fin" type="datetime-local" class="form-control" [(ngModel)]="evento.fecha_fin" required />
     </div>
   </div>
 
@@ -52,24 +59,24 @@
   <div class="row g-3 mb-4">
     <div class="col-md-6">
       <label for="capacidad" class="form-label">Capacidad total</label>
-      <input id="capacidad" name="capacidad" type="number" min="1" class="form-control" ngModel />
+      <input id="capacidad" name="capacidad" type="number" min="1" class="form-control" [(ngModel)]="evento.capacidad" required />
     </div>
     <div class="col-md-6">
       <label for="precio" class="form-label">Precio base (COP)</label>
-      <input id="precio" name="precio" type="number" min="0" class="form-control" ngModel />
+      <input id="precio" name="precio" type="number" min="0" class="form-control" [(ngModel)]="evento.precio" required />
     </div>
     <div class="col-12">
       <label for="observaciones" class="form-label">Observaciones</label>
-      <textarea id="observaciones" name="observaciones" rows="2" class="form-control" ngModel></textarea>
+      <textarea id="observaciones" name="observaciones" rows="2" class="form-control" [(ngModel)]="evento.observaciones"></textarea>
     </div>
   </div>
 
-  @if (mensaje) {
-    <div class="alert alert-info">{{ mensaje }}</div>
+  @if (error) {
+    <div class="alert alert-danger">{{ error }}</div>
   }
 
   <div class="d-flex justify-content-end gap-2">
     <a routerLink="/agente/eventos" class="btn btn-outline-primary">Cancelar</a>
-    <button type="submit" class="btn btn-primary">Registrar evento</button>
+    <button type="submit" class="btn btn-primary">{{ codigo ? 'Guardar cambios' : 'Registrar evento' }}</button>
   </div>
 </form>

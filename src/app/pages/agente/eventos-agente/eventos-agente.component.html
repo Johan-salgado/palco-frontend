@@ -6,6 +6,10 @@
   <a routerLink="/agente/registrar-evento" class="btn btn-primary">Registrar evento</a>
 </div>
 
+@if (error) {
+  <div class="alert alert-danger">{{ error }}</div>
+}
+
 @if (eventos.length === 0) {
   <p>Todavía no has registrado eventos.</p>
 } @else {
@@ -17,9 +21,10 @@
           <th>Evento</th>
           <th>Lugar</th>
           <th>Inicio</th>
-          <th>Capacidad</th>
+          <th>Entradas reservadas</th>
           <th>Precio base</th>
           <th>Estado</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -28,14 +33,18 @@
             <td>{{ e.codigo }}</td>
             <td>{{ e.nombre }}</td>
             <td>{{ e.teatro }} ({{ e.ciudad }})</td>
-            <td>{{ e.fechaInicio | date: 'dd/MM/yyyy h:mm a' }}</td>
-            <td>{{ e.capacidad }}</td>
-            <td>{{ e.precioBase | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
+            <td>{{ e.fecha_inicio | date: 'dd/MM/yyyy h:mm a' }}</td>
+            <td>{{ e.entradas_reservadas }} / {{ e.capacidad }}</td>
+            <td>{{ e.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
             <td>
               <app-estado-badge [estado]="e.estado" />
-              @if (e.causaCancelacion) {
-                <small class="d-block text-secondary">{{ e.causaCancelacion }}</small>
+              @if (e.causa_cancelacion) {
+                <small class="d-block text-secondary">{{ e.causa_cancelacion }}</small>
               }
+            </td>
+            <td>
+              <a class="btn btn-outline-primary btn-sm me-1" [routerLink]="['/agente/editar-evento', e.codigo]">Editar</a>
+              <button type="button" class="btn btn-outline-danger btn-sm" (click)="eliminar(e)">Eliminar</button>
             </td>
           </tr>
         }

@@ -3,6 +3,10 @@
   <p class="text-secondary">Reservas solicitadas a tus eventos. Puedes cambiar el estado desde la última columna.</p>
 </div>
 
+@if (error) {
+  <div class="alert alert-danger">{{ error }}</div>
+}
+
 @if (reservas.length === 0) {
   <p>Tus eventos todavía no tienen reservas.</p>
 } @else {
@@ -24,14 +28,19 @@
         @for (r of reservas; track r.id) {
           <tr>
             <td>{{ r.id }}</td>
-            <td>{{ r.nombreEvento }}</td>
-            <td>{{ r.nombreCliente }}</td>
-            <td>{{ r.fechaReserva | date: 'dd/MM/yyyy h:mm a' }}</td>
-            <td>{{ r.numEntradas }}</td>
-            <td>{{ r.valorTotal | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
-            <td><app-estado-badge [estado]="r.estado" /></td>
+            <td>{{ r.evento }}</td>
+            <td>{{ r.cliente }}</td>
+            <td>{{ r.fecha | date: 'dd/MM/yyyy h:mm a' }}</td>
+            <td>{{ r.entradas }}</td>
+            <td>{{ r.total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
             <td>
-              <select class="form-select form-select-sm selector" [(ngModel)]="r.estado">
+              <app-estado-badge [estado]="r.estado" />
+              @if (r.causa_cancelacion) {
+                <small class="d-block text-secondary">{{ r.causa_cancelacion }}</small>
+              }
+            </td>
+            <td>
+              <select class="form-select form-select-sm selector" [ngModel]="r.estado" (ngModelChange)="cambiarEstado(r, $event)">
                 @for (e of estados; track e) {
                   <option [value]="e">{{ e }}</option>
                 }
