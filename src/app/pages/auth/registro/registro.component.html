@@ -12,8 +12,8 @@
       <h2 class="mb-4">Crear cuenta</h2>
 
       <div class="mb-3">
-        <label for="tipo" class="form-label">Tipo de cuenta</label>
-        <select id="tipo" name="tipo" class="form-select" [(ngModel)]="tipoCuenta">
+        <label for="rol" class="form-label">Tipo de cuenta</label>
+        <select id="rol" name="rol" class="form-select" [(ngModel)]="persona.rol">
           <option value="cliente">Cliente</option>
           <option value="agente">Agente</option>
         </select>
@@ -22,44 +22,53 @@
       <div class="row g-3">
         <div class="col-12">
           <label for="nombre" class="form-label">Nombre completo</label>
-          <input id="nombre" name="nombre" class="form-control" ngModel />
+          <input id="nombre" name="nombre" class="form-control" [(ngModel)]="persona.nombre" required />
         </div>
         <div class="col-sm-6">
           <label for="identificacion" class="form-label">Cédula o pasaporte</label>
-          <input id="identificacion" name="identificacion" class="form-control" ngModel />
+          <input id="identificacion" name="identificacion" class="form-control" [(ngModel)]="persona.identificacion" required />
         </div>
         <div class="col-sm-6">
           <label for="telefono" class="form-label">Teléfono</label>
-          <input id="telefono" name="telefono" type="tel" class="form-control" ngModel />
+          <input id="telefono" name="telefono" type="tel" class="form-control" [(ngModel)]="persona.telefono" />
         </div>
         <div class="col-12">
-          <label for="correo" class="form-label">Correo electrónico</label>
-          <input id="correo" name="correo" type="email" class="form-control" ngModel />
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input id="email" name="email" type="email" class="form-control" [(ngModel)]="persona.email" required />
         </div>
         <div class="col-sm-6">
           <label for="direccion" class="form-label">Dirección</label>
-          <input id="direccion" name="direccion" class="form-control" ngModel />
+          <input id="direccion" name="direccion" class="form-control" [(ngModel)]="persona.direccion" required />
         </div>
         <div class="col-sm-6">
           <label for="ciudad" class="form-label">Ciudad</label>
-          <input id="ciudad" name="ciudad" class="form-control" ngModel />
+          <select id="ciudad" name="ciudad" class="form-select" [(ngModel)]="persona.id_ciudad" required>
+            <option [ngValue]="null" disabled>Selecciona una ciudad</option>
+            @for (c of ciudades; track c.id) {
+              <option [ngValue]="c.id">{{ c.nombre }} ({{ c.departamento }})</option>
+            }
+          </select>
         </div>
 
-        @if (tipoCuenta === 'agente') {
+        @if (persona.rol === 'agente') {
           <div class="col-12">
             <label for="experiencia" class="form-label">Experiencia</label>
-            <textarea id="experiencia" name="experiencia" rows="2" class="form-control" ngModel></textarea>
+            <textarea id="experiencia" name="experiencia" rows="2" class="form-control" [(ngModel)]="persona.experiencia"></textarea>
           </div>
         }
 
         <div class="col-12">
           <label for="clave" class="form-label">Contraseña</label>
-          <input id="clave" name="clave" type="password" class="form-control" ngModel />
+          <input id="clave" name="clave" type="password" class="form-control" [(ngModel)]="persona.clave" required />
         </div>
       </div>
 
       @if (mensaje) {
-        <div class="alert alert-info mt-3">{{ mensaje }}</div>
+        <div class="alert alert-success mt-3">{{ mensaje }}</div>
+      }
+
+      @if (error) {
+        <div class="alert alert-danger mt-3">{{ error }}</div>
       }
 
       <button type="submit" class="btn btn-primary w-100 mt-4">Crear cuenta</button>
