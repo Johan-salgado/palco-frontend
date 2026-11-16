@@ -1,35 +1,31 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { RESERVAS } from '../mocks/mock-data';
-import { Reserva, ReservaDetalle } from '../models/models';
-import { EventoService } from './evento.service';
-import { UsuarioService } from './usuario.service';
+import { Observable } from 'rxjs';
+import { API_URL } from '../config/api';
+import { Reserva } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class ReservaService {
-  private eventoService = inject(EventoService);
-  private usuarioService = inject(UsuarioService);
+  private http = inject(HttpClient);
+  private url = `${API_URL}/reservas`;
 
-  private agregarDetalle(reserva: Reserva): ReservaDetalle {
-    const evento = this.eventoService.getEvento(reserva.eventoCodigo);
-    const cliente = this.usuarioService.getUsuario(reserva.clienteId);
-    return {
-      ...reserva,
-      nombreEvento: evento ? evento.nombre : '',
-      ciudad: evento ? evento.ciudad : '',
-      nombreCliente: cliente ? cliente.nombre : '',
-    };
+  getPorCliente(idCliente: string): Observable<Reserva[]> {
+    return this.http.get<Reserva[]>(`${this.url}/cliente/${idCliente}`);
   }
 
-  getReservas(): Reserva[] {
-    return RESERVAS;
+  getPorAgente(idAgente: string): Observable<Reserva[]> {
+    return this.http.get<Reserva[]>(`${this.url}/agente/${idAgente}`);
   }
 
-  getReservasPorCliente(clienteId: number): ReservaDetalle[] {
-    return RESERVAS.filter((r) => r.clienteId === clienteId).map((r) => this.agregarDetalle(r));
+  crear(reserva: any): Observable<Reserva> {
+    return this.http.post<Reserva>(this.url, reserva);
   }
 
-  getReservasPorAgente(agenteId: number): ReservaDetalle[] {
-    const codigos = this.eventoService.getEventosPorAgente(agenteId).map((e) => e.codigo);
-    return RESERVAS.filter((r) => codigos.includes(r.eventoCodigo)).map((r) => this.agregarDetalle(r));
+  actualizar(id: number, cambios: any): Observable<Reserva> {
+    return this.http.put<Reserva>(`${this.url}/${id}`, cambios);
+  }
+
+  eliminar(id: number): Observable<any> {
+    return this.http.delete(`${this.url}/${id}`);
   }
 }

@@ -1,22 +1,35 @@
-import { Injectable } from '@angular/core';
-import { EVENTOS } from '../mocks/mock-data';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { API_URL } from '../config/api';
 import { Evento } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class EventoService {
-  getEventos(): Evento[] {
-    return EVENTOS;
+  private http = inject(HttpClient);
+  private url = `${API_URL}/eventos`;
+
+  getDisponibles(): Observable<Evento[]> {
+    return this.http.get<Evento[]>(`${this.url}/disponibles`);
   }
 
-  getEventosDisponibles(): Evento[] {
-    return EVENTOS.filter((e) => e.estado === 'Programado' || e.estado === 'En Boletería' || e.estado === 'En Vivo');
+  getPorAgente(idAgente: string): Observable<Evento[]> {
+    return this.http.get<Evento[]>(`${this.url}/agente/${idAgente}`);
   }
 
-  getEvento(codigo: string): Evento | undefined {
-    return EVENTOS.find((e) => e.codigo === codigo);
+  getEvento(codigo: number): Observable<Evento> {
+    return this.http.get<Evento>(`${this.url}/${codigo}`);
   }
 
-  getEventosPorAgente(agenteId: number): Evento[] {
-    return EVENTOS.filter((e) => e.agenteId === agenteId);
+  crear(evento: any): Observable<Evento> {
+    return this.http.post<Evento>(this.url, evento);
+  }
+
+  actualizar(codigo: number, evento: any): Observable<Evento> {
+    return this.http.put<Evento>(`${this.url}/${codigo}`, evento);
+  }
+
+  eliminar(codigo: number): Observable<any> {
+    return this.http.delete(`${this.url}/${codigo}`);
   }
 }
