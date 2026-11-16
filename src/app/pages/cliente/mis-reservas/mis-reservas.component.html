@@ -3,6 +3,10 @@
   <p class="text-secondary">Aquí puedes ver el estado de cada una de tus reservas.</p>
 </div>
 
+@if (error) {
+  <div class="alert alert-danger">{{ error }}</div>
+}
+
 @if (reservas.length === 0) {
   <p>Todavía no tienes reservas. <a routerLink="/cliente/eventos">Ver eventos</a></p>
 } @else {
@@ -16,17 +20,30 @@
           <th>Entradas</th>
           <th>Valor total</th>
           <th>Estado</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         @for (r of reservas; track r.id) {
           <tr>
             <td>{{ r.id }}</td>
-            <td>{{ r.nombreEvento }} <small class="text-secondary">({{ r.ciudad }})</small></td>
-            <td>{{ r.fechaReserva | date: 'dd/MM/yyyy h:mm a' }}</td>
-            <td>{{ r.numEntradas }}</td>
-            <td>{{ r.valorTotal | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
-            <td><app-estado-badge [estado]="r.estado" /></td>
+            <td>{{ r.evento }} <small class="text-secondary">({{ r.ciudad }})</small></td>
+            <td>{{ r.fecha | date: 'dd/MM/yyyy h:mm a' }}</td>
+            <td>{{ r.entradas }}</td>
+            <td>{{ r.total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
+            <td>
+              <app-estado-badge [estado]="r.estado" />
+              @if (r.causa_cancelacion) {
+                <small class="d-block text-secondary">{{ r.causa_cancelacion }}</small>
+              }
+            </td>
+            <td>
+              @if (r.estado !== 'Cancelada') {
+                <button type="button" class="btn btn-outline-primary btn-sm" (click)="cancelar(r)">Cancelar</button>
+              } @else {
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="eliminar(r)">Eliminar</button>
+              }
+            </td>
           </tr>
         }
       </tbody>
