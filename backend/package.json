@@ -1,0 +1,26 @@
+{
+  "name": "palco-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "tsnd --respawn --clear src/app.ts",
+    "build": "tsc",
+    "db:init": "tsnd --transpile-only src/scripts/init-db.ts",
+    "db:seed": "tsnd --transpile-only src/scripts/seed-db.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "env-var": "^7.5.0",
+    "express": "^5.2.1",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.10.0",
+    "@types/pg": "^8.15.6",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "~5.9.3"
+  }
+}
