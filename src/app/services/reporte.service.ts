@@ -1,56 +1,62 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { INGRESOS_POR_MES } from '../mocks/mock-data';
-import { EventoService } from './evento.service';
-import { ReservaService } from './reserva.service';
-import { UsuarioService } from './usuario.service';
+import { Observable } from 'rxjs';
+import { API_URL } from '../config/api';
+import {
+  EventoCancelado,
+  EventosAgenteCiudad,
+  EventoUbicacion,
+  HistorialReserva,
+  IngresoMes,
+  IngresosAgente,
+  IngresosCliente,
+  ReservaCancelada,
+  ReservasEventoMes,
+  Resumen,
+} from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class ReporteService {
-  private usuarioService = inject(UsuarioService);
-  private eventoService = inject(EventoService);
-  private reservaService = inject(ReservaService);
+  private http = inject(HttpClient);
+  private url = `${API_URL}/reportes`;
 
-  getResumen() {
-    const usuarios = this.usuarioService.getUsuarios();
-    return [
-      { titulo: 'Clientes', valor: usuarios.filter((u) => u.rol === 'cliente').length },
-      { titulo: 'Agentes', valor: usuarios.filter((u) => u.rol === 'agente').length },
-      { titulo: 'Administradores', valor: usuarios.filter((u) => u.rol === 'administrador').length },
-      { titulo: 'Eventos', valor: this.eventoService.getEventos().length },
-      { titulo: 'Reservas', valor: this.reservaService.getReservas().length },
-    ];
+  getResumen(): Observable<Resumen> {
+    return this.http.get<Resumen>(`${this.url}/resumen`);
   }
 
-  getIngresosPorMes() {
-    return INGRESOS_POR_MES;
+  getIngresosPorAgente(): Observable<IngresosAgente[]> {
+    return this.http.get<IngresosAgente[]>(`${this.url}/ingresos-por-agente`);
   }
 
-  getReservasPorEvento() {
-    return this.eventoService.getEventos().map((e) => {
-      const cantidad = this.reservaService.getReservas().filter((r) => r.eventoCodigo === e.codigo).length;
-      return { evento: e.nombre, reservas: cantidad };
-    });
+  getIngresosPorCliente(): Observable<IngresosCliente[]> {
+    return this.http.get<IngresosCliente[]>(`${this.url}/ingresos-por-cliente`);
   }
 
-  getEventosPorAgente() {
-    const filas: { agente: string; ciudad: string; eventos: number }[] = [];
-    for (const e of this.eventoService.getEventos()) {
-      const agente = this.usuarioService.getUsuario(e.agenteId)?.nombre ?? '';
-      const fila = filas.find((f) => f.agente === agente && f.ciudad === e.ciudad);
-      if (fila) {
-        fila.eventos++;
-      } else {
-        filas.push({ agente: agente, ciudad: e.ciudad, eventos: 1 });
-      }
-    }
-    return filas;
+  getIngresosPorMes(): Observable<IngresoMes[]> {
+    return this.http.get<IngresoMes[]>(`${this.url}/ingresos-por-mes`);
   }
 
-  getEventosCancelados() {
-    return this.eventoService.getEventos().filter((e) => e.estado === 'Cancelado');
+  getReservasPorEventoYMes(): Observable<ReservasEventoMes[]> {
+    return this.http.get<ReservasEventoMes[]>(`${this.url}/reservas-por-evento-mes`);
   }
 
-  getReservasCanceladas() {
-    return this.reservaService.getReservas().filter((r) => r.estado === 'Cancelada');
+  getEventosPorAgenteYCiudad(): Observable<EventosAgenteCiudad[]> {
+    return this.http.get<EventosAgenteCiudad[]>(`${this.url}/eventos-por-agente-ciudad`);
+  }
+
+  getEventosPorUbicacion(): Observable<EventoUbicacion[]> {
+    return this.http.get<EventoUbicacion[]>(`${this.url}/eventos-por-ubicacion`);
+  }
+
+  getHistorialReservas(idCliente: string): Observable<HistorialReserva[]> {
+    return this.http.get<HistorialReserva[]>(`${this.url}/historial-reservas?id_cliente=${idCliente}`);
+  }
+
+  getReservasCanceladas(): Observable<ReservaCancelada[]> {
+    return this.http.get<ReservaCancelada[]>(`${this.url}/reservas-canceladas`);
+  }
+
+  getEventosCancelados(): Observable<EventoCancelado[]> {
+    return this.http.get<EventoCancelado[]>(`${this.url}/eventos-cancelados`);
   }
 }
