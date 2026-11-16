@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  myDB:
+    image: postgres:15.3
+    container_name: palco-database
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=proyecto-integrador-db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+
+  pdAdmin:
+    image: dpage/pgadmin4
+    container_name: palco-pgadmin
+    restart: always
+    depends_on:
+      - myDB
+    ports:
+      - 8081:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@google.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
