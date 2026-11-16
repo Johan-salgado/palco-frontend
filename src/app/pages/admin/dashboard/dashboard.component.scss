@@ -34,6 +34,11 @@ th {
   min-height: 4px;
 }
 
-.progress-bar {
-  background-color: #c9a24b;
+.tabla-alta {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.selector {
+  max-width: 260px;
 }
