@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { rolGuard } from './guards/rol.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -19,6 +20,8 @@ export const routes: Routes = [
 
   {
     path: 'cliente',
+    canActivate: [rolGuard],
+    data: { rol: 'cliente' },
     children: [
       {
         path: 'eventos',
@@ -37,9 +40,15 @@ export const routes: Routes = [
 
   {
     path: 'agente',
+    canActivate: [rolGuard],
+    data: { rol: 'agente' },
     children: [
       {
         path: 'registrar-evento',
+        loadComponent: () => import('./pages/agente/registrar-evento/registrar-evento.component').then((m) => m.RegistrarEventoComponent),
+      },
+      {
+        path: 'editar-evento/:codigo',
         loadComponent: () => import('./pages/agente/registrar-evento/registrar-evento.component').then((m) => m.RegistrarEventoComponent),
       },
       {
@@ -55,6 +64,8 @@ export const routes: Routes = [
 
   {
     path: 'admin',
+    canActivate: [rolGuard],
+    data: { rol: 'administrador' },
     children: [
       {
         path: 'dashboard',
